@@ -26,34 +26,6 @@
         </div>
     </v-container>
 </template>
-
-<script>
-export default {
-  name: "NotFound",
-  data () {
-      return {
-      alignmentsAvailable: [
-        'start',
-        'center',
-        'end',
-        'baseline',
-        'stretch',
-      ],
-      alignment: 'center',
-      dense: false,
-      justifyAvailable: [
-        'start',
-        'center',
-        'end',
-        'space-around',
-        'space-between',
-      ],
-      justify: 'center',
-    }
-  },
-};
-</script>
-
 <style>
 .paragraph-text {
     font-size: 18px;
