@@ -7,10 +7,15 @@ import EspaciosIndex from "@/views/espacios/index.vue";
 import UbicacionesIndex from "@/views/ubicaciones/index.vue";
 import UbicacionesShow from "@/views/ubicaciones/show.vue";
 
+import Signin from "@/views/auth/signin.vue";
+import Perfil from "@/views/auth/perfil.vue";
+
 Vue.use(VueRouter);
 
 const routes = [
   { path: "/", name: "Home", component: Home },
+  { path: "/perfil", name: "Perfil", component: Perfil },
+  { path: "/signin", name: "Signin", component: Signin },
   {
     path: "/ubicaciones/:ubicacion_id/espacios",
     name: "Espacios",
