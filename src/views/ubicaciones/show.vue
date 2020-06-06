@@ -2,7 +2,7 @@
   <div>
     <v-container class="white lighten-5">
       <v-row dense>
-        <v-col cols="4" sm="4">
+        <v-col cols="5" sm="5">
           <v-card elevation="2">
             <v-carousel
               :continuous="false"
@@ -23,7 +23,7 @@
           </v-card>
         </v-col>
 
-        <v-col cols="8" sm="8">
+        <v-col cols="7" sm="7">
           <v-card class="mx-auto" elevation="2" height="200">
             <v-card-title class="headline">{{ ubicacion.nombre }}</v-card-title>
 
@@ -41,7 +41,15 @@
             </v-card-subtitle>
 
             <v-card-actions>
-              <v-btn text>Listen Now</v-btn>
+              <v-btn dark color="blue">
+                <v-icon>mdi-share</v-icon> Compartir
+              </v-btn>
+              <v-btn dark color="orange">
+                <v-icon>mdi-map-marker</v-icon> Como llegar
+              </v-btn>
+              <v-btn dark color="green">
+                <v-icon>mdi-phone</v-icon> {{ ubicacion.telefono }}
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -50,9 +58,9 @@
 
       <v-col sm="12">
         <h2 class="text-center">Espacios Disponibles</h2>
-        <v-slide-group center-active mandatory v-model="model">
+        <v-slide-group center-active mandatory v-model="espacio_activo">
           <v-slide-item
-            v-for="espacio in espacios"
+            v-for="(espacio, i) in espacios"
             :key="espacio.id"
             v-slot:default="{ active, toggle }"
           >
@@ -99,7 +107,41 @@
 
       <v-row>
         <v-col sm="8">
-          <h1>info aqui</h1>
+          <h1>
+            {{ espacios[espacio_activo].nombre }}
+          </h1>
+          <v-divider />
+
+          <h6>Dias Habiles</h6>
+          <v-chip-group column active-class="primary--text">
+            <v-chip v-for="(dia, i) in espacios[espacio_activo].dias" :key="i">
+              {{ dias[dia] }}
+            </v-chip>
+          </v-chip-group>
+          <br />
+          <h6>Descripcion:</h6>
+          <p>
+            {{ espacios[espacio_activo].descripcion }}
+          </p>
+          <h6 v-if="espacios[espacio_activo].amenidades.length > 0">
+            Amenidades
+          </h6>
+          <v-row>
+            <v-col
+              v-for="(amenidad, i) in espacios[espacio_activo].amenidades"
+              :key="i"
+              cols="3"
+            >
+              <v-card light class="mx-auto text-center" shaped="true">
+                <v-icon x-large class="mt-3">
+                  {{ lista_de_amenidades[amenidad].icon }}
+                </v-icon>
+                <v-card-text>
+                  <h3>{{ lista_de_amenidades[amenidad].nombre }}</h3>
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
         </v-col>
 
         <v-col sm="4">
@@ -289,28 +331,9 @@
               </v-list-item>
             </v-card-text>
           </v-card>
-          <v-btn color="red lighten-2" dark @click="dialog = true">
-            Open dialog
-          </v-btn>
         </v-col>
       </v-row>
     </v-container>
-
-    <!-- dialog -->
-    <v-dialog v-model="dialog" width="500">
-      <v-card>
-        <v-card-text>
-          <v-row>
-            <v-col cols="6" sm="6">
-              <v-date-picker full-width v-model="dates" range></v-date-picker>
-            </v-col>
-            <v-col cols="6" sm="6">
-              <v-date-picker full-width v-model="dates" range></v-date-picker>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 
@@ -323,15 +346,18 @@ export default {
     hora_checkin_menu: false,
     hora_checkout_menu: false,
 
+    espacio_activo: 0,
+
     date: new Date().toISOString().substr(0, 7),
     single_day: false,
     dialog: false,
     dates: [null, null],
     hours: [null, null],
-    model: null,
+
     ubicacion: {
       id: 825715,
       nombre: "Edificio Central",
+      telefono: "+52 555-5555",
       empresa_id: 1772,
       lat: 9,
       lon: 10,
@@ -347,72 +373,64 @@ export default {
       {
         id: 1,
         nombre: "Sala Central",
+        descripcion:
+          "Bacon ipsum dolor amet t-bone tail chicken rump bresaola pig chuck buffalo biltong drumstick flank beef ribs capicola. Kielbasa biltong alcatra pancetta prosciutto drumstick.",
         ubicacion_id: 825715,
         hora_apertura: "7:00",
         hora_cierre: "18:00",
         dias: [1, 2, 3, 4, 5, 6],
         precio_hora: 150.0,
         rating: 4.5,
+        capacidad: 6,
+        amenidades: [0],
         img:
           "https://ctfassets.imgix.net/vh7r69kgcki3/4uXYSXZpnNTFQ19vZP5i6s/d6de1a9e339d2cd13b8bce6e4ff4e3d0/1p_Office_No_Window.jpg?auto=format%20compress&fit=crop&q=50&w=900&h=506",
       },
       {
         id: 2,
         nombre: "Sala de Juntas Este",
+        descripcion:
+          "Bacon ipsum dolor amet t-bone tail chicken rump bresaola pig chuck buffalo biltong drumstick flank beef ribs capicola. Kielbasa biltong alcatra pancetta prosciutto drumstick.",
         ubicacion_id: 825715,
         hora_apertura: "7:00",
         hora_cierre: "14:00",
         dias: [1, 2, 3, 4, 5, 6],
         precio_hora: 200.0,
         rating: 4.5,
+        capacidad: 6,
+        amenidades: [0, 1, 2],
         img:
           "https://ctfassets.imgix.net/vh7r69kgcki3/4uXYSXZpnNTFQ19vZP5i6s/d6de1a9e339d2cd13b8bce6e4ff4e3d0/1p_Office_No_Window.jpg?auto=format%20compress&fit=crop&q=50&w=900&h=506",
       },
       {
         id: 3,
         nombre: "Sala de Juntas Este",
+        descripcion:
+          "Bacon ipsum dolor amet t-bone tail chicken rump bresaola pig chuck buffalo biltong drumstick flank beef ribs capicola. Kielbasa biltong alcatra pancetta prosciutto drumstick.",
         ubicacion_id: 825715,
         hora_apertura: "7:00",
         hora_cierre: "14:00",
         dias: [1, 2, 3, 4, 5, 6],
         precio_hora: 200.0,
         rating: 4.5,
+        capacidad: 6,
+        amenidades: [],
         img:
           "https://ctfassets.imgix.net/vh7r69kgcki3/4uXYSXZpnNTFQ19vZP5i6s/d6de1a9e339d2cd13b8bce6e4ff4e3d0/1p_Office_No_Window.jpg?auto=format%20compress&fit=crop&q=50&w=900&h=506",
       },
       {
         id: 4,
         nombre: "Sala de Juntas Este",
+        descripcion:
+          "Bacon ipsum dolor amet t-bone tail chicken rump bresaola pig chuck buffalo biltong drumstick flank beef ribs capicola. Kielbasa biltong alcatra pancetta prosciutto drumstick.",
         ubicacion_id: 825715,
         hora_apertura: "7:00",
         hora_cierre: "14:00",
         dias: [1, 2, 3, 4, 5, 6],
         precio_hora: 200.0,
         rating: 4.5,
-        img:
-          "https://ctfassets.imgix.net/vh7r69kgcki3/4uXYSXZpnNTFQ19vZP5i6s/d6de1a9e339d2cd13b8bce6e4ff4e3d0/1p_Office_No_Window.jpg?auto=format%20compress&fit=crop&q=50&w=900&h=506",
-      },
-      {
-        id: 5,
-        nombre: "Sala de Juntas Este",
-        ubicacion_id: 825715,
-        hora_apertura: "7:00",
-        hora_cierre: "14:00",
-        dias: [1, 2, 3, 4, 5, 6],
-        precio_hora: 200.0,
-        rating: 4.5,
-        img:
-          "https://ctfassets.imgix.net/vh7r69kgcki3/4uXYSXZpnNTFQ19vZP5i6s/d6de1a9e339d2cd13b8bce6e4ff4e3d0/1p_Office_No_Window.jpg?auto=format%20compress&fit=crop&q=50&w=900&h=506",
-      },
-      {
-        id: 6,
-        nombre: "Sala de Juntas Este",
-        ubicacion_id: 825715,
-        hora_apertura: "7:00",
-        hora_cierre: "14:00",
-        dias: [1, 2, 3, 4, 5, 6],
-        precio_hora: 200.0,
-        rating: 4.5,
+        capacidad: 6,
+        amenidades: [0, 1, 2],
         img:
           "https://ctfassets.imgix.net/vh7r69kgcki3/4uXYSXZpnNTFQ19vZP5i6s/d6de1a9e339d2cd13b8bce6e4ff4e3d0/1p_Office_No_Window.jpg?auto=format%20compress&fit=crop&q=50&w=900&h=506",
       },
@@ -434,7 +452,29 @@ export default {
         end: "2019-01-09 15:30",
       },
     ],
+
+    lista_de_amenidades: [
+      { id: 1, nombre: "WIFI", icon: "mdi-wifi" },
+      { id: 2, nombre: "A/C", icon: "mdi-star" },
+      { id: 3, nombre: "Cafe", icon: "mdi-coffee" },
+    ],
+
+    dias: [
+      "domingo",
+      "lunes",
+      "martes",
+      "miercoles",
+      "jueves",
+      "viernes",
+      "sabado",
+    ],
   }),
+
+  methods: {
+    getModel() {
+      console.log(this.model);
+    },
+  },
   mounted() {},
   computed: {
     dateRangeText() {
