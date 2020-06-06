@@ -10,6 +10,8 @@ import UbicacionesShow from "@/views/ubicaciones/show.vue";
 import Signin from "@/views/auth/signin.vue";
 import Perfil from "@/views/auth/perfil.vue";
 
+import Page404 from "@/views/error/Page404.vue";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -26,6 +28,7 @@ const routes = [
     name: "UbicacionesShow",
     component: UbicacionesShow,
   },
+  { path: "/404", name: "Page404", component: Page404 },
 ];
 
 const router = new VueRouter({
