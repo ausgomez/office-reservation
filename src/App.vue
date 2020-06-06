@@ -15,7 +15,6 @@
 import Navbar from "@/components/layout/Navbar";
 import Sidebar from "@/components/layout/Sidebar";
 import Footer from "@/components/layout/Footer";
-efvegergre
 
 export default {
   name: "App",
