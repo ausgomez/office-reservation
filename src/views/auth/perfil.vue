@@ -168,20 +168,20 @@
         </div>
         <div class="container py-5">
           <h3 class="label">Método de pago</h3>
-            <div class="row">
-              <div class="col-lg-8 mx-auto">
-                <div class="card ">
+            <div class="row mx-auto">
+              <div class="col-lg-12">
+                <div class="card">
                   <div class="card-header">
                     <!-- Credit card form content -->
                     <div class="tab-content">
                       <!-- credit card info-->
-                        <div id="credit-card" class="tab-pane fade show active pt-3">
+                        <div id="credit-card col-md-8">
                           <form role="form">
                             <div class="form-group">
                               <label for="username"><h6>Nombre</h6></label>
-                                <input type="text" name="username" required class="form-control "></div>
+                                <input type="text" name="username" required class="form-control"></div>
                                   <div class="form-group"><label for="cardNumber"><h6>Número de tarjeta</h6></label></div>
-                                    <div class="input-group"><input type="text" name="cardNumber" placeholder="XXXX-XXXX-XXXX-XXXX" class="form-control " required></div>
+                                    <div class="input-group"><input type="text" name="cardNumber" placeholder="XXXX-XXXX-XXXX-XXXX" class="form-control" required></div>
                                       <div class="row">
                                         <div class="col-sm-8">
                                           <div class="form-group"><label><span class="hidden-xs"><h6>Fecha de expiración</h6></span></label>
@@ -215,7 +215,7 @@ export default {
 
 <style>
 .rounded-circle {
-  height: 6rem;
+  height: 10rem;
 }
 .input-group-text {
   width: 80px;
@@ -231,6 +231,13 @@ export default {
   padding-left: 50%;
   padding-bottom: 5rem;
 }
+@media only screen and (max-width: 770px)  {
+  #check {
+    display: flex;
+    position: absolute;
+    
+  }
+}
 #card-middle{
   display: flex;
   position: relative;
@@ -239,10 +246,10 @@ export default {
   padding-top: 0px !important;
 }
 #informacion {
-  padding-bottom: 5rem;
+  padding-bottom: 1rem;
 }
 #reservaciones-recientes {
-  padding-bottom:5rem;
+  padding-bottom:1rem;
 }
 #iconos-pago {
   display: flex;
