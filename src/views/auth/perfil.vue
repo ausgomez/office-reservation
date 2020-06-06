@@ -24,10 +24,10 @@
                   </div>
                 </div>
                 <div class="col-sm-12 col-md-6">
-                  <label class="sr-only" for="inlineFormInputGroup">Telefono</label>
+                  <label class="sr-only" for="inlineFormInputGroup">Teléfono</label>
                   <div class="input-group mb-2">
                     <div class="input-group-prepend">
-                      <div class="input-group-text">Telefono</div>
+                      <div class="input-group-text">Teléfono</div>
                     </div>
                     <input type="text" class="form-control" id="inlineFormInputGroup">
                   </div>
@@ -35,10 +35,10 @@
               </div>
               <div class="form-row align-items-center">
                 <div class="col-sm-12 col-md-6">
-                  <label class="sr-only" for="inlineFormInputGroup">Direccion</label>
+                  <label class="sr-only" for="inlineFormInputGroup">Dirección</label>
                   <div class="input-group mb-2">
                     <div class="input-group-prepend">
-                      <div class="input-group-text">Direccion</div>
+                      <div class="input-group-text">Dirección</div>
                     </div>
                     <input type="text" class="form-control" id="inlineFormInputGroup">
                   </div>
@@ -75,27 +75,27 @@
               </div>
               <div class="row py-2 px-5">
                 <div class="col-sm-6">
-                  <button class="btn btn-primary">Cambiar Constraseña</button>
+                  <button class="btn btn-primary">Actualizar datos</button>
                 </div>
                 <div class="col-sm-6">
-                  <button class="btn btn-primary">Actualizar datos</button>
+                  <button class="btn btn-primary">Cambiar Constraseña</button>
                 </div>
               </div>
             </form>
           </div>
         </div>
       </div>
-      <div id="reservaciones-recientes">
-          <h3 class="label">Reservaciones recientes</h3>
+      <div id="reservaciónes-recientes">
+          <h3 class="label">Reservaciónes recientes</h3>
             <div class="card my-3" style="max-width: 100%">
               <div class="row no-gutters">
                 <div class="col-lg-12">
                   <div class="card-body row">
                     <div class="col-md-5" id="card-left">
-                      <h5 class="card-title"><small class="text-muted">ID de Reservacion: 7844-8545</small></h5>
+                      <h5 class="card-title"><small class="text-muted">ID de Reservación: 7844-8545</small></h5>
                       <h3 class="label">Oficina</h3>
                       <p class="card-text">Edificio Central</p>
-                      <p class="card-text">Fecha de creacion: 15 Julio, 2020</p>
+                      <p class="card-text">Fecha de creación: 15 Julio, 2020</p>
                     </div>
                     <div class="col-md-5" id="card-middle">
                       <p class="card-text">Fecha de ingreso: 16 Julio, 2020</p>
@@ -118,10 +118,10 @@
                 <div class="col-lg-12">
                   <div class="card-body row">
                     <div class="col-md-5" id="card-left">
-                      <h5 class="card-title"><small class="text-muted">ID de Reservacion: 7844-8545</small></h5>
+                      <h5 class="card-title"><small class="text-muted">ID de Reservación: 7844-8545</small></h5>
                       <h3 class="label">Oficina</h3>
                       <p class="card-text">Edificio Central</p>
-                      <p class="card-text">Fecha de creacion: 15 Julio, 2020</p>
+                      <p class="card-text">Fecha de creación: 15 Julio, 2020</p>
                     </div>
                     <div class="col-md-5" id="card-middle">
                       <p class="card-text">Fecha de ingreso: 16 Julio, 2020</p>
@@ -144,10 +144,10 @@
                 <div class="col-lg-12">
                   <div class="card-body row">
                     <div class="col-md-5" id="card-left">
-                      <h5 class="card-title"><small class="text-muted">ID de Reservacion: 7844-8545</small></h5>
+                      <h5 class="card-title"><small class="text-muted">ID de Reservación: 7844-8545</small></h5>
                       <h3 class="label">Oficina</h3>
                       <p class="card-text">Edificio Central</p>
-                      <p class="card-text">Fecha de creacion: 15 Julio, 2020</p>
+                      <p class="card-text">Fecha de creación: 15 Julio, 2020</p>
                     </div>
                     <div class="col-md-5" id="card-middle">
                       <p class="card-text">Fecha de ingreso: 16 Julio, 2020</p>
@@ -248,7 +248,7 @@ export default {
 #informacion {
   padding-bottom: 1rem;
 }
-#reservaciones-recientes {
+#reservaciónes-recientes {
   padding-bottom:1rem;
 }
 #iconos-pago {
