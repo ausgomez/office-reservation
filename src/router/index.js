@@ -10,15 +10,12 @@ import UbicacionesShow from "@/views/ubicaciones/show.vue";
 import Signin from "@/views/auth/signin.vue";
 import Perfil from "@/views/auth/perfil.vue";
 
-import NotFound from "/home/nestor/Dev/office-reservation/public/NotFound.vue";
-
 Vue.use(VueRouter);
 
 const routes = [
   { path: "/", name: "Home", component: Home },
   { path: "/perfil", name: "Perfil", component: Perfil },
   { path: "/signin", name: "Signin", component: Signin },
-  { path: "/notfound", name: "NotFound", component: NotFound },
   {
     path: "/ubicaciones/:ubicacion_id/espacios",
     name: "Espacios",
