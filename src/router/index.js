@@ -17,11 +17,6 @@ const routes = [
   { path: "/perfil", name: "Perfil", component: Perfil },
   { path: "/signin", name: "Signin", component: Signin },
   {
-    path: "/ubicaciones/:ubicacion_id/espacios",
-    name: "Espacios",
-    component: EspaciosIndex,
-  },
-  {
     path: "/empresa/:empresa_id/ubicaciones",
     name: "UbicacionesIndex",
     component: UbicacionesIndex,

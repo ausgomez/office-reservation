@@ -3,7 +3,7 @@
     <Navbar @clickDrawer="setDrawer" />
     <Sidebar ref="Sidebar" />
     <v-content>
-      <v-container class="fill-height">
+      <v-container>
         <router-view />
       </v-container>
     </v-content>
