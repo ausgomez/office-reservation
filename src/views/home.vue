@@ -90,7 +90,7 @@
 
           <v-btn
             color="grey"
-            href="/empresas/index.vue"
+            href="/empresas/show.vue"
             outlined
             large
           >
@@ -98,6 +98,7 @@
               Reservar Ya
             </span>
           </v-btn>
+          <p class="pt-5">¿Rentas espacios? <a href="/empresas/index.vue">Click aquí</a></p>
         </v-container>
 
         <div class="py-12"></div>
