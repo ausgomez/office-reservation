@@ -51,7 +51,6 @@
                   ></v-card-title>
 
                   <v-card-subtitle>{{ ubicacion.direccion }}</v-card-subtitle>
-                  <v-card-tex> ID: {{ ubicacion.id }} </v-card-tex>
                   <v-card-actions>
                     <router-link
                       :to="{

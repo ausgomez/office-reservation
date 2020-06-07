@@ -38,9 +38,9 @@
       </v-card-text>
       <v-card-text class="text-center">
         <v-btn
-          @click="login"
           x-large
           color="#42A5F5"
+          @click="login"
           :elevation="12"
           class="mx-auto mr-12"
         >
@@ -140,7 +140,7 @@ export default {
             alert(err.message);
           });
       } else {
-        this.feedback = "Please fill in both fields";
+        alert("Please fill in both fields");
       }
     },
     signup() {
@@ -148,22 +148,27 @@ export default {
       if (this.email && this.password) {
         console.log("pass");
         //check in DB for duplicate value
-        firebase
-          .auth()
-          .createUserWithEmailAndPassword(this.email, this.password)
-          .then((cred) => {
-            db.collection("usuarios").add({
-              email: this.email,
-              admin: false,
-              user_id: cred.user.uid,
+        let ref = db.collection("users");
+        ref.get().then((doc) => {
+          console.log(doc);
+          //create user with email and password
+          firebase
+            .auth()
+            .createUserWithEmailAndPassword(this.email, this.password)
+            .then((cred) => {
+              ref.set({
+                email: this.email,
+                admin: false,
+                user_id: cred.user.uid,
+              });
+            })
+            .then(() => {
+              this.$router.push({ name: "Home" });
+            })
+            .catch((err) => {
+              console.log(err);
             });
-          })
-          .then(() => {
-            this.$router.push({ name: "Home" });
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        });
       } else {
         this.feedback = "You must all fields.";
       }
