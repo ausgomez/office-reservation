@@ -337,7 +337,13 @@
                   </v-menu>
                 </v-col>
               </v-row>
-              <v-btn v-if="showReserveBtn" large block color="blue" dark
+              <v-btn
+                v-if="showReserveBtn"
+                @click="generarReserva"
+                large
+                block
+                color="blue"
+                dark
                 >Reservar</v-btn
               >
               <p></p>
@@ -373,15 +379,54 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <!-- Loading -->
+    <v-dialog v-model="loading" persistent width="300">
+      <v-card color="primary pt-6" dark>
+        <v-card-text class="text-center">
+          Generando Reserva
+          <hr />
+          <v-progress-linear
+            indeterminate
+            color="white"
+            class="mb-0"
+          ></v-progress-linear>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
+    <!-- Loading -->
+    <v-dialog v-model="success" width="300">
+      <v-card color="green pt-6" dark>
+        <v-card-title>
+          <v-icon class="text-center mx-auto" x-large>mdi-star</v-icon>
+        </v-card-title>
+        <v-card-text class="text-center">
+          <h3>Reservacion Exitosa!</h3>
+        </v-card-text>
+        <v-card-text>
+          <v-btn @click="success = false" color="white" light block
+            >Cerrar</v-btn
+          >
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import db from "@/firebase/init.js";
+import firebase from "firebase";
 
 export default {
   name: "UbicacionesShow",
   data: () => ({
+    loading: false,
+
+    success: false,
+
+    user: null,
+
     fecha_checkin_menu: false,
     fecha_checkout_menu: false,
     hora_checkin_menu: false,
@@ -442,19 +487,23 @@ export default {
           this.espacios.push(doc.data());
         });
       });
+
+    await this.getUser();
   },
 
   watch: {
     daysInUse(value) {
-      this.hoursInUse = this.calcHoursPerDay() * value;
+      this.hoursInUse = (this.calcHoursPerDay() * value).toFixed(2);
 
-      this.total =
-        this.hoursInUse * this.espacios[this.espacio_activo].precio_hora;
+      this.total = (
+        this.hoursInUse * this.espacios[this.espacio_activo].precio_hora
+      ).toFixed(2);
     },
     hours() {
-      this.hoursInUse = this.calcHoursPerDay() * 1;
-      this.total =
-        this.hoursInUse * this.espacios[this.espacio_activo].precio_hora;
+      this.hoursInUse = (this.calcHoursPerDay() * 1).toFixed(2);
+      this.total = (
+        this.hoursInUse * this.espacios[this.espacio_activo].precio_hora
+      ).toFixed(2);
     },
   },
 
@@ -517,6 +566,16 @@ export default {
   },
 
   methods: {
+    getUser() {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          this.user = user;
+        } else {
+          this.user = null;
+        }
+      });
+    },
+
     allowedDates(val) {
       let num = new Date(val).getDay();
       return this.espacios[this.espacio_activo].dias.find((x) => x === num);
@@ -552,8 +611,50 @@ export default {
       }
     },
 
-    generarReserva() {
-      console.log();
+    async generarReserva() {
+      this.loading = true;
+
+      console.log("Creando Reservacion");
+      console.log("usuario", this.user);
+      console.log("espacio", this.espacios[this.espacio_activo]);
+      if (this.single_day) {
+        console.log("Dia", this.dates[0]);
+      } else {
+        console.log("fecha de entrada", this.dates[0]);
+        console.log("fecha de salida", this.dates[1]);
+      }
+      console.log("total horas", this.hoursInUse);
+      console.log("total", this.total);
+
+      // save on DB
+
+      await db
+        .collection("reservaciones")
+        .add({
+          id:
+            Math.floor(Math.random() * 9999) +
+            "-" +
+            Math.floor(Math.random() * 9999),
+          ubicacion_id: this.ubicacion.id,
+          reservacion: this.espacios[this.espacio_activo].nombre,
+          fecha_inicio: this.dates[0],
+          fecha_salida: this.dates[this.single_day ? 0 : 1],
+          un_dia: this.single_day,
+          total: this.total,
+          horas: this.hoursInUse,
+          hora_inicio: this.hours[0],
+          hora_salida: this.hours[1],
+          fecha_reservacion: new Date().toISOString().slice(0, 10),
+          user_id: this.user.uid,
+        })
+        .then(() => {
+          this.success = true; //redirect to index
+        })
+        .catch((err) => {
+          alert(err);
+        });
+
+      this.loading = false;
     },
   },
 };

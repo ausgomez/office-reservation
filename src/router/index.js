@@ -14,12 +14,15 @@ import ShowEmpresa from "@/views/empresas/show.vue";
 import Signin from "@/views/auth/signin.vue";
 import Perfil from "@/views/auth/perfil.vue";
 
+import Reservaciones from "@/views/reservaciones/index.vue";
+
 import Page404 from "@/views/error/Page404.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   { path: "/", name: "Home", component: Home },
+  { path: "/reservaciones/:reservacion_id", component: Reservaciones },
   {
     path: "/perfil",
     name: "Perfil",
@@ -30,7 +33,7 @@ const routes = [
   },
   { path: "/login", name: "Signin", component: Signin },
   {
-    path: "/empresa/:empresa_id/ubicaciones",
+    path: "/empresas/:empresa_id/ubicaciones",
     name: "UbicacionesIndex",
     component: UbicacionesIndex,
     meta: {
@@ -54,7 +57,7 @@ const routes = [
     },
   },
   {
-    path: "/empresa/:empresa_id/ubicaciones/:ubicacion_id/espacios",
+    path: "/empresas/:empresa_id/ubicaciones/:ubicacion_id/espacios",
     name: "UbicacionesShow",
     component: UbicacionesShow,
     meta: {
