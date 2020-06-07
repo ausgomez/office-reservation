@@ -1,6 +1,15 @@
 <template>
   <div>
     <v-card light>
+      <v-card-text>
+        <router-link
+          :to="{
+            name: 'Perfil',
+          }"
+        >
+          <v-icon>mdi-keyboard-backspace</v-icon> Ver mis reservaciones
+        </router-link>
+      </v-card-text>
       <v-card-text class="text-center">
         <v-img
           class="mx-auto"

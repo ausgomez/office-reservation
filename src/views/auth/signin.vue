@@ -96,8 +96,31 @@
                   @click:append="show1 = !show1"
                 ></v-text-field>
               </v-col>
+              <v-col cols="12">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01"
+                      >Empresa</label
+                    >
+                  </div>
+                  <select
+                    class="custom-select"
+                    v-model="empModel"
+                    id="inputGroupSelect01"
+                  >
+                    <option
+                      v-for="(empresa, i) in empresas"
+                      :key="i"
+                      :value="i"
+                      >{{ empresa.id }}</option
+                    >
+                  </select>
+                </div>
+              </v-col>
             </v-row>
-
+            <v-btn color="success" class="mx-auto " @click="check">
+              ss Cuenta
+            </v-btn>
             <v-btn color="success" class="mx-auto " @click="signup">
               Crear Cuenta
             </v-btn>
@@ -117,14 +140,22 @@ export default {
   data: () => ({
     /*tittle: "Iniciar sesion",*/
     email: null,
+    empModel: null,
     password: null,
     show1: false,
+    empresas: [],
     rules: {
       required: (value) => !!value || "Required",
       min: (v) => v.length >= 8 || "Min 8 characters",
     },
     dialog: false,
   }),
+  async created() {
+    await db
+      .collection("empresas")
+      .get()
+      .then((snap) => snap.forEach((doc) => this.empresas.push(doc.data())));
+  },
   methods: {
     login() {
       if (this.email && this.password) {
@@ -143,33 +174,30 @@ export default {
         alert("Please fill in both fields");
       }
     },
-    signup() {
+    async signup() {
       console.log("signup", this.email, this.password);
-      if (this.email && this.password) {
+      if (this.email && this.password && this.empModel != null) {
         console.log("pass");
         //check in DB for duplicate value
-        let ref = db.collection("users");
-        ref.get().then((doc) => {
-          console.log(doc);
-          //create user with email and password
-          firebase
-            .auth()
-            .createUserWithEmailAndPassword(this.email, this.password)
-            .then((cred) => {
-              ref.set({
-                email: this.email,
-                admin: false,
-                user_id: cred.user.uid,
-              });
-            })
-            .then(() => {
-              this.dialog.false;
-              this.$router.push({ name: "Home" });
-            })
-            .catch((err) => {
-              console.log(err);
+        let ref = db.collection("usuarios");
+        await firebase
+          .auth()
+          .createUserWithEmailAndPassword(this.email, this.password)
+          .then((cred) => {
+            ref.add({
+              email: this.email,
+              admin: false,
+              user_id: cred.user.uid,
+              empresa_id: this.empresas[this.empModel].id,
             });
-        });
+          })
+          .then(() => {
+            this.dialog.false;
+            this.$router.push({ name: "Home" });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       } else {
         this.feedback = "You must all fields.";
       }

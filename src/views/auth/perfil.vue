@@ -10,10 +10,14 @@
         <div class="col-sm-12 col-md-4">
           <img
             class="rounded-circle img-responsive"
-            src="https://mdbootstrap.com/img/Photos/Avatars/img%20(31).jpg"
+            :src="
+              `https://randomuser.me/api/portraits/${
+                profile.genero
+              }/${Math.floor(Math.random() * 50)}.jpg`
+            "
             alt=""
           />
-          <p class="label mt-3">Daniela Rodriguez</p>
+          <p class="label mt-3">{{ profile.nombre }}</p>
         </div>
         <div class="col-sm-12 col-md-8">
           <form>
@@ -25,8 +29,10 @@
                     <div class="input-group-text">Nombre</div>
                   </div>
                   <input
+                    readonly
                     type="text"
                     class="form-control"
+                    :value="profile.nombre"
                     id="inlineFormInputGroup"
                   />
                 </div>
@@ -40,8 +46,10 @@
                     <div class="input-group-text">Teléfono</div>
                   </div>
                   <input
+                    readonly
                     type="text"
                     class="form-control"
+                    :value="profile.telefono"
                     id="inlineFormInputGroup"
                   />
                 </div>
@@ -58,6 +66,8 @@
                   </div>
                   <input
                     type="text"
+                    readonly
+                    :value="profile.direccion"
                     class="form-control"
                     id="inlineFormInputGroup"
                   />
@@ -71,7 +81,9 @@
                   </div>
                   <input
                     type="text"
+                    readonly
                     class="form-control"
+                    :value="profile.email"
                     id="inlineFormInputGroup"
                   />
                 </div>
@@ -85,6 +97,8 @@
                     <div class="input-group-text">RFC</div>
                   </div>
                   <input
+                    readonly
+                    :value="profile.RFC"
                     type="text"
                     class="form-control"
                     id="inlineFormInputGroup"
@@ -98,79 +112,63 @@
                     <div class="input-group-text">Cuenta</div>
                   </div>
                   <input
+                    readonly
                     type="text"
                     class="form-control"
+                    :value="profile.admin ? 'Admin' : 'Normal'"
                     id="inlineFormInputGroup"
                   />
                 </div>
               </div>
             </div>
             <div class="row py-2 px-5">
-              <div class="col-sm-6">
+              <!-- <div class="col-sm-6">
                 <button class="btn btn-primary">Actualizar datos</button>
               </div>
               <div class="col-sm-6">
-                <button class="btn btn-primary">Cambiar Constraseña</button>
-              </div>
+                <button class="btn btn-primary">Cambiar Contraseña</button>
+              </div> -->
             </div>
           </form>
         </div>
       </div>
     </div>
-    <div id="reservaciónes-recientes">
+    <div id="reservaciónes-recientes" v-if="reservaciones.length > 0">
       <h3 class="label">Reservaciónes recientes</h3>
-      <div class="card my-3" style="max-width: 100%">
+      <div
+        v-for="res in reservaciones"
+        :key="res.id"
+        class="card my-3"
+        style="max-width: 100%"
+      >
         <div class="row no-gutters">
-          <div class="col-lg-12">
-            <div class="card-body row">
-              <div class="col-md-5" id="card-left">
-                <h5 class="card-title">
-                  <small class="text-muted">ID de Reservación: 7844-8545</small>
-                </h5>
-                <h3 class="label">Oficina</h3>
-                <p class="card-text">Edificio Central</p>
-                <p class="card-text">Fecha de creación: 15 Julio, 2020</p>
-              </div>
-              <div class="col-md-5" id="card-middle">
-                <p class="card-text">Fecha de ingreso: 16 Julio, 2020</p>
-                <p class="card-text">Fecha de salida: 20 Julio, 2020</p>
-              </div>
-              <div class="col-md-2">
-                <div class="row pull-right" id="check">
-                  <svg
-                    class="bi bi-check-circle-fill"
-                    width="2em"
-                    viewBox="0 0 16 16"
-                    fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"
-                    />
-                  </svg>
-                </div>
-                <p class="card-text">$1,500.00 MXN</p>
-              </div>
+          <div class="col-lg-2">
+            <div class="card-body p-6">
+              <vue-qrcode :text="`/reservaciones/ + ${res.id}`" :size="150" />
             </div>
           </div>
-        </div>
-      </div>
-      <div class="card my-3" style="max-width: 100%">
-        <div class="row no-gutters">
-          <div class="col-lg-12">
+          <div class="col-lg-10">
             <div class="card-body row">
               <div class="col-md-5" id="card-left">
                 <h5 class="card-title">
-                  <small class="text-muted">ID de Reservación: 7844-8545</small>
+                  <small class="text-muted"
+                    >ID de Reservación: {{ res.id }}</small
+                  >
                 </h5>
-                <h3 class="label">Oficina</h3>
-                <p class="card-text">Edificio Central</p>
-                <p class="card-text">Fecha de creación: 15 Julio, 2020</p>
+                <h3 class="label">{{ res.reservacion }}</h3>
+                <p class="card-text">
+                  {{ res.ubicacion_id }}
+                </p>
+                <p class="card-text">
+                  Fecha de reservación: {{ res.fecha_reservacion }}
+                </p>
+                <p class="card-text">Horas: {{ res.horas }}</p>
               </div>
               <div class="col-md-5" id="card-middle">
-                <p class="card-text">Fecha de ingreso: 16 Julio, 2020</p>
-                <p class="card-text">Fecha de salida: 20 Julio, 2020</p>
+                <p class="card-text">
+                  Fecha de ingreso: {{ res.fecha_inicio }}
+                </p>
+                <p class="card-text">Fecha de salida: {{ res.fecha_salida }}</p>
               </div>
               <div class="col-md-2">
                 <div class="row pull-right" id="check">
@@ -187,44 +185,17 @@
                     />
                   </svg>
                 </div>
-                <p class="card-text">$1,500.00 MXN</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card my-3" style="max-width: 100%">
-        <div class="row no-gutters">
-          <div class="col-lg-12">
-            <div class="card-body row">
-              <div class="col-md-5" id="card-left">
-                <h5 class="card-title">
-                  <small class="text-muted">ID de Reservación: 7844-8545</small>
-                </h5>
-                <h3 class="label">Oficina</h3>
-                <p class="card-text">Edificio Central</p>
-                <p class="card-text">Fecha de creación: 15 Julio, 2020</p>
-              </div>
-              <div class="col-md-5" id="card-middle">
-                <p class="card-text">Fecha de ingreso: 16 Julio, 2020</p>
-                <p class="card-text">Fecha de salida: 20 Julio, 2020</p>
-              </div>
-              <div class="col-md-2">
-                <div class="row pull-right" id="check">
-                  <svg
-                    class="bi bi-check-circle-fill"
-                    width="2em"
-                    viewBox="0 0 16 16"
-                    fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg"
+                <p class="card-text">${{ res.total }} MXN</p>
+                <p class="card-text">
+                  <router-link
+                    :to="{
+                      name: 'Reservaciones',
+                      params: { reservacion_id: res.id },
+                    }"
                   >
-                    <path
-                      fill-rule="evenodd"
-                      d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"
-                    />
-                  </svg>
-                </div>
-                <p class="card-text">$1,500.00 MXN</p>
+                    Ver reservacion
+                  </router-link>
+                </p>
               </div>
             </div>
           </div>
@@ -326,9 +297,73 @@
 </template>
 
 <script>
+import db from "@/firebase/init.js";
+import VueQrcode from "vue-qr";
+import firebase from "firebase";
+
 export default {
   name: "Perfil",
-  data: () => ({}),
+  components: {
+    VueQrcode,
+  },
+  data: () => ({
+    profile: null,
+    user: null,
+    reservaciones: [],
+    ubicaciones: [],
+  }),
+
+  async created() {
+    //get user
+    await firebase.auth().onAuthStateChanged(async (user) => {
+      if (user) {
+        this.user = user;
+        await db
+          .collection("usuarios")
+          .where("user_id", "==", user.uid)
+          .get()
+          .then((snapshot) => {
+            snapshot.forEach((doc) => {
+              this.user.admin = doc.data().admin;
+              this.user.empresa_id = doc.data().empresa_id;
+            });
+          });
+      } else {
+        this.user = null;
+      }
+    });
+
+    // get current user
+    await db
+      .collection("usuarios")
+      .where("user_id", "==", this.user.uid)
+      .get()
+      .then((snapshot) =>
+        snapshot.forEach((doc) => (this.profile = doc.data()))
+      );
+
+    //get reservaciones
+    await db
+      .collection("reservaciones")
+      .where("user_id", "==", this.user.uid)
+      .get()
+      .then((snapshot) =>
+        snapshot.forEach((doc) => this.reservaciones.push(doc.data()))
+      );
+
+    //get ubicaciones
+    this.getUbicaciones();
+  },
+
+  async getUbicaciones() {
+    //get ubicaciones
+    await db
+      .collection("ubicaciones")
+      .get()
+      .then((snapshot) =>
+        snapshot.forEach((doc) => this.ubicaciones.push(doc.data()))
+      );
+  },
 };
 </script>
 

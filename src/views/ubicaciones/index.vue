@@ -72,7 +72,13 @@
       <v-col>
         <v-card color="grey lighten-4" height="50em" width="31em">
           <v-toolbar dense> </v-toolbar>
-          <MapGoogle />
+          <gmaps-map :options="mapOptions">
+            <gmaps-marker
+              v-for="(item, i) in items"
+              :key="i"
+              :options="item.options"
+            />
+          </gmaps-map>
         </v-card>
       </v-col>
     </v-row>
@@ -80,16 +86,27 @@
 </template>
 
 <script>
-import MapGoogle from "@/components/maps/MapsGoogle.vue";
 import db from "@/firebase/init.js";
+import { gmapsMap, gmapsMarker } from "x5-gmaps";
 
 export default {
   name: "UbicacionesIndex",
   components: {
-    MapGoogle,
+    gmapsMap,
+    gmapsMarker,
   },
   data: () => ({
     ubicaciones: [],
+    mapOptions: {
+      center: { lat: -27.47, lng: 153.025 },
+      zoom: 12,
+    },
+    items: [
+      { options: { position: { lat: -27.41, lng: 153.01 } } },
+      { options: { position: { lat: -27.42, lng: 153.02 } } },
+      { options: { position: { lat: -27.48, lng: 153.08 } } },
+      { options: { position: { lat: -27.49, lng: 153.09 } } },
+    ],
   }),
 
   async created() {

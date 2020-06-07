@@ -4,14 +4,14 @@
       <router-link v-if="user" :to="{ name: 'Perfil' }">
         <v-list-item>
           <v-list-item-action>
-            <v-icon>mdi-person</v-icon>
+            <v-icon>mdi-account</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>{{ user.email }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </router-link>
-      <router-link to="home">
+      <router-link to="/">
         <v-list-item>
           <v-list-item-action>
             <v-icon>mdi-home</v-icon>
@@ -23,7 +23,7 @@
       </router-link>
       <v-list-item v-if="user.admin" to="/empresas">
         <v-list-item-action>
-          <v-icon>mdi-home</v-icon>
+          <v-icon>mdi-office-building</v-icon>
         </v-list-item-action>
         <v-list-item-content>
           <v-list-item-title>Empresas</v-list-item-title>
@@ -38,21 +38,13 @@
       >
         <v-list-item>
           <v-list-item-action>
-            <v-icon>mdi-account</v-icon>
+            <v-icon>mdi-map-marker</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Ubicaciones</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </router-link>
-      <v-list-item link>
-        <v-list-item-action>
-          <v-icon>mdi-contact-mail</v-icon>
-        </v-list-item-action>
-        <v-list-item-content>
-          <v-list-item-title>Reservaciones</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>

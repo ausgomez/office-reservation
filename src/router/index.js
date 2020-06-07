@@ -22,7 +22,11 @@ Vue.use(VueRouter);
 
 const routes = [
   { path: "/", name: "Home", component: Home },
-  { path: "/reservaciones/:reservacion_id", component: Reservaciones },
+  {
+    path: "/reservaciones/:reservacion_id",
+    name: "Reservaciones",
+    component: Reservaciones,
+  },
   {
     path: "/perfil",
     name: "Perfil",
@@ -36,9 +40,6 @@ const routes = [
     path: "/empresas/:empresa_id/ubicaciones",
     name: "UbicacionesIndex",
     component: UbicacionesIndex,
-    meta: {
-      requiresAuth: true,
-    },
   },
   {
     path: "/empresas/:empresa_id",
@@ -60,9 +61,6 @@ const routes = [
     path: "/empresas/:empresa_id/ubicaciones/:ubicacion_id/espacios",
     name: "UbicacionesShow",
     component: UbicacionesShow,
-    meta: {
-      requiresAuth: true,
-    },
   },
   { path: "/404", name: "Page404", component: Page404 },
 ];

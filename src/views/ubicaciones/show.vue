@@ -127,6 +127,7 @@
             </v-chip>
           </v-chip-group>
           <br />
+
           <h6>Horario</h6>
           <h4>
             {{ espacios[espacio_activo].hora_apertura }} -
@@ -137,6 +138,19 @@
           <p>
             {{ espacios[espacio_activo].descripcion }}
           </p>
+
+          <h6>3D Tour</h6>
+          <iframe
+            width="400"
+            height="250"
+            :src="
+              `https://my.matterport.com/show/?m=${espacios[espacio_activo].matterport}`
+            "
+            frameborder="0"
+            allowfullscreen
+            allow="xr-spatial-tracking"
+          ></iframe>
+          <p></p>
           <h6 v-if="espacios[espacio_activo].amenidades.length > 0">
             Amenidades
           </h6>

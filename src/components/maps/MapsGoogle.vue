@@ -1,5 +1,5 @@
 <template>
-  <gmaps-map>
+  <gmaps-map :options="mapOptions">
     <gmaps-marker v-for="(item, i) in items" :key="i" :options="item.options" />
   </gmaps-map>
 </template>
@@ -10,6 +10,10 @@ import { gmapsMap, gmapsMarker } from "x5-gmaps";
 export default {
   components: { gmapsMap, gmapsMarker },
   data: () => ({
+    mapOptions: {
+      center: { lat: 26.203, lng: -98.23 },
+      zoom: 12,
+    },
     items: [
       { options: { position: { lat: -27.41, lng: 153.01 } } },
       { options: { position: { lat: -27.42, lng: 153.02 } } },
