@@ -58,7 +58,12 @@
 
       <v-col sm="12">
         <h2 class="text-center">Espacios Disponibles</h2>
-        <v-slide-group center-active mandatory v-model="espacio_activo">
+        <v-slide-group
+          center-active
+          :show-arrows="true"
+          mandatory
+          v-model="espacio_activo"
+        >
           <v-slide-item
             v-for="(espacio, i) in espacios"
             :key="espacio.id"
@@ -112,12 +117,18 @@
           </h1>
           <v-divider />
 
-          <h6>Dias Habiles</h6>
+          <h6>Dias habiles</h6>
           <v-chip-group column active-class="primary--text">
             <v-chip v-for="(dia, i) in espacios[espacio_activo].dias" :key="i">
               {{ dias[dia] }}
             </v-chip>
           </v-chip-group>
+          <br />
+          <h6>Horario</h6>
+          <h4>
+            {{ espacios[espacio_activo].hora_apertura }} -
+            {{ espacios[espacio_activo].hora_cierre }}
+          </h4>
           <br />
           <h6>Descripcion:</h6>
           <p>
@@ -132,7 +143,7 @@
               :key="i"
               cols="3"
             >
-              <v-card light class="mx-auto text-center" shaped="true">
+              <v-card light class="mx-auto text-center" shaped>
                 <v-icon x-large class="mt-3">
                   {{ lista_de_amenidades[amenidad].icon }}
                 </v-icon>
@@ -146,9 +157,12 @@
 
         <v-col sm="4">
           <v-card elevation="12">
-            <v-card-title>$54/hora</v-card-title>
+            <v-card-title
+              >${{ espacios[espacio_activo].precio_hora }}/hora</v-card-title
+            >
             <v-card-subtitle>
-              <v-icon small color="blue lighten-1">mdi-star</v-icon> 4.5 stars
+              <v-icon small color="blue lighten-1">mdi-star</v-icon>
+              {{ espacios[espacio_activo].rating }} stars
             </v-card-subtitle>
             <v-card-text>
               <v-switch
@@ -179,7 +193,12 @@
                         v-on="on"
                       ></v-text-field>
                     </template>
-                    <v-date-picker v-model="dates[0]" no-title scrollable>
+                    <v-date-picker
+                      :allowed-dates="allowedDates"
+                      :min="today"
+                      v-model="dates[0]"
+                      scrollable
+                    >
                       <v-spacer></v-spacer>
                       <v-btn
                         text
@@ -218,7 +237,12 @@
                         v-on="on"
                       ></v-text-field>
                     </template>
-                    <v-date-picker v-model="dates[1]" no-title scrollable>
+                    <v-date-picker
+                      v-model="dates[1]"
+                      :min="dates[0]"
+                      scrollable
+                      :allowed-dates="allowedDates"
+                    >
                       <v-spacer></v-spacer>
                       <v-btn
                         text
@@ -310,25 +334,37 @@
                   </v-menu>
                 </v-col>
               </v-row>
-              <v-btn large block color="blue" dark>Reservar</v-btn>
+              <v-btn v-if="showReserveBtn" large block color="blue" dark
+                >Reservar</v-btn
+              >
               <p></p>
               <p class="text-center">Aun no te cobraran</p>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Horas en total: </v-list-item-title>
-                </v-list-item-content>
-                <v-list-item-action>
-                  <strong>45 horas</strong>
-                </v-list-item-action>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Horas en total: </v-list-item-title>
-                </v-list-item-content>
-                <v-list-item-action>
-                  <strong>45 horas</strong>
-                </v-list-item-action>
-              </v-list-item>
+              <div v-if="1">
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title>Dias: </v-list-item-title>
+                  </v-list-item-content>
+                  <v-list-item-action>
+                    <strong>{{ daysInUse }} dias</strong>
+                  </v-list-item-action>
+                </v-list-item>
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title>Horas en total: </v-list-item-title>
+                  </v-list-item-content>
+                  <v-list-item-action>
+                    <strong>{{ hoursInUse }} horas</strong>
+                  </v-list-item-action>
+                </v-list-item>
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title>Total: </v-list-item-title>
+                  </v-list-item-content>
+                  <v-list-item-action>
+                    <h4>${{ total }}</h4>
+                  </v-list-item-action>
+                </v-list-item>
+              </div>
             </v-card-text>
           </v-card>
         </v-col>
@@ -345,10 +381,8 @@ export default {
     fecha_checkout_menu: false,
     hora_checkin_menu: false,
     hora_checkout_menu: false,
-
     espacio_activo: 0,
 
-    date: new Date().toISOString().substr(0, 7),
     single_day: false,
     dialog: false,
     dates: [null, null],
@@ -380,7 +414,7 @@ export default {
         hora_cierre: "18:00",
         dias: [1, 2, 3, 4, 5, 6],
         precio_hora: 150.0,
-        rating: 4.5,
+        rating: 3.2,
         capacidad: 6,
         amenidades: [0],
         img:
@@ -394,7 +428,7 @@ export default {
         ubicacion_id: 825715,
         hora_apertura: "7:00",
         hora_cierre: "14:00",
-        dias: [1, 2, 3, 4, 5, 6],
+        dias: [1],
         precio_hora: 200.0,
         rating: 4.5,
         capacidad: 6,
@@ -435,7 +469,7 @@ export default {
           "https://ctfassets.imgix.net/vh7r69kgcki3/4uXYSXZpnNTFQ19vZP5i6s/d6de1a9e339d2cd13b8bce6e4ff4e3d0/1p_Office_No_Window.jpg?auto=format%20compress&fit=crop&q=50&w=900&h=506",
       },
     ],
-    today: "2019-01-08",
+    today: new Date().toISOString().slice(0, 10),
     events: [
       {
         name: "Weekly Meeting",
@@ -460,25 +494,130 @@ export default {
     ],
 
     dias: [
-      "domingo",
       "lunes",
       "martes",
       "miercoles",
       "jueves",
       "viernes",
       "sabado",
+      "domingo",
     ],
+
+    date: new Date().toISOString().slice(0, 10),
+
+    hoursInUse: 0,
+
+    total: 0,
   }),
 
-  methods: {
-    getModel() {
-      console.log(this.model);
+  created() {},
+
+  watch: {
+    daysInUse(value) {
+      this.hoursInUse = this.calcHoursPerDay() * value;
+
+      this.total =
+        this.hoursInUse * this.espacios[this.espacio_activo].precio_hora;
+    },
+    hours() {
+      this.hoursInUse = this.calcHoursPerDay() * 1;
+      this.total =
+        this.hoursInUse * this.espacios[this.espacio_activo].precio_hora;
     },
   },
-  mounted() {},
+
   computed: {
-    dateRangeText() {
-      return this.dates.join(" ~ ");
+    showReserveBtn() {
+      if (this.single_day) {
+        return (
+          this.dates[0] != null &&
+          this.hours[0] != null &&
+          this.hours[1] != null
+        );
+      } else {
+        return this.dates[0] != null && this.dates[1] != null;
+      }
+    },
+
+    daysInUse() {
+      let In;
+      let Out;
+
+      if (this.single_day == true) {
+        if (this.dates[0] === null) {
+          return 0;
+        } else {
+          In = new Date(this.dates[0]);
+          Out = new Date(this.dates[0]);
+        }
+      } else {
+        if (this.dates[0] === null || this.dates[1] === null) {
+          return 0;
+        } else {
+          In = new Date(this.dates[0]);
+          Out = new Date(this.dates[1]);
+        }
+      }
+
+      function addDays(date, days) {
+        const copy = new Date(Number(date));
+        copy.setDate(date.getDate() + days);
+        return copy;
+      }
+
+      let disponibles = this.espacios[this.espacio_activo].dias; // lunes, martes
+
+      let daysInUse = 0;
+      // loop
+      while (In.toISOString() != Out.toISOString()) {
+        if (disponibles.find((x) => x == In.getDay())) {
+          daysInUse++;
+        }
+        In = addDays(In, 1);
+      }
+
+      daysInUse++;
+
+      console.log("Total de dias en uso: ", daysInUse);
+
+      return daysInUse;
+    },
+  },
+
+  methods: {
+    allowedDates(val) {
+      let num = new Date(val).getDay();
+      return this.espacios[this.espacio_activo].dias.find((x) => x === num);
+    },
+
+    calcHoursPerDay() {
+      let x = this.espacio_activo;
+
+      if (!this.single_day) {
+        let abre = this.espacios[x].hora_apertura
+          .split(":")
+          .map((x) => parseInt(x));
+        abre = abre[0] + abre[1] / 60;
+
+        let cierra = this.espacios[x].hora_cierre
+          .split(":")
+          .map((x) => parseInt(x));
+        cierra = cierra[0] + cierra[1] / 60;
+
+        return cierra - abre;
+      } else {
+        if (this.hours[0] != null && this.hours[1] != null) {
+          let abre = this.hours[0].split(":").map((x) => parseInt(x));
+          abre = abre[0] + abre[1] / 60;
+
+          let cierra = this.hours[1].split(":").map((x) => parseInt(x));
+          cierra = cierra[0] + cierra[1] / 60;
+
+          return cierra - abre;
+        } else {
+          return 0;
+        }
+      }
     },
   },
 };
