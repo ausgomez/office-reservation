@@ -24,7 +24,7 @@ const routes = [
     component: UbicacionesIndex,
   },
   {
-    path: "/ubicaciones/:ubicacion_id/espacios",
+    path: "/empresa/:empresa_id/ubicaciones/:ubicacion_id/espacios",
     name: "UbicacionesShow",
     component: UbicacionesShow,
   },

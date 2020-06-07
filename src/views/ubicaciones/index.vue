@@ -39,7 +39,7 @@
                     <v-icon>mdi-heart</v-icon>
                   </v-btn>
                   <v-card-title class="headline"
-                    >Edificio {{ ubicacion.nombre }}
+                    >{{ ubicacion.nombre }}
                     <v-rating
                       :value="4.5"
                       color="white"
@@ -51,7 +51,7 @@
                   ></v-card-title>
 
                   <v-card-subtitle>{{ ubicacion.direccion }}</v-card-subtitle>
-
+                  <v-card-tex> ID: {{ ubicacion.id }} </v-card-tex>
                   <v-card-actions>
                     <router-link
                       :to="{
@@ -82,6 +82,7 @@
 
 <script>
 import MapGoogle from "@/components/maps/MapsGoogle.vue";
+import db from "@/firebase/init.js";
 
 export default {
   name: "UbicacionesIndex",
@@ -89,25 +90,22 @@ export default {
     MapGoogle,
   },
   data: () => ({
-    ubicaciones: [
-      {
-        id: 825715,
-        nombre: "Edificio Central",
-        descripcion:
-          "Bacon ipsum dolor amet t-bone tail chicken rump bresaola pig chuck buffalo biltong drumstick flank beef ribs capicola. Kielbasa biltong alcatra pancetta prosciutto drumstick. Pork sausage tri-tip, frankfurter prosciutto doner spare ribs meatloaf shoulder chicken tongue shankle",
-        telefono: "+52 555-5555",
-        empresa_id: 1772,
-        lat: 9,
-        lon: 10,
-        activo: true,
-        direccion: `Calle 13 #456 Colonia Las Milpas, CP 89228 Toluca, Mexico`,
-        imagenes: [
-          "https://locations-api-production.imgix.net/locations/image/f0381cfe-1aba-11ea-97fa-0a5bc5747799/Web_72DPI-20191121_WeWork_Williams_Square_Dallas_015.jpg?auto=format%20compress&fit=crop&q=50&w=900&h=506",
-          "https://locations-api-production.imgix.net/locations/image/ef449688-1aba-11ea-97fa-0a5bc5747799/Web_72DPI-20191121_WeWork_Williams_Square_Dallas_003.jpg?auto=format%20compress&fit=crop&q=50&w=900&h=506",
-          "https://locations-api-production.imgix.net/locations/image/ef53fac4-1aba-11ea-97fa-0a5bc5747799/Web_72DPI-20191121_WeWork_Williams_Square_Dallas_004.jpg?auto=format%20compress&fit=crop&q=50&w=900&h=506",
-        ],
-      },
-    ],
+    ubicaciones: [],
   }),
+
+  async created() {
+    let id = this.$route.params.empresa_id;
+
+    await db
+      .collection("ubicaciones")
+      .where("empresa_id", "==", id)
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((doc) => {
+          this.ubicaciones.push(doc.data());
+          this.ubicaciones.id = doc.id;
+        });
+      });
+  },
 };
 </script>
