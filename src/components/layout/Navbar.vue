@@ -17,22 +17,46 @@
       <v-toolbar-title class="white--text">Coprotel</v-toolbar-title>
     </router-link>
     <v-spacer></v-spacer>
-    <v-btn to="/login" class="blue" dark text>
+    <v-btn v-if="!user" to="/login" class="blue" dark text>
       <span>Login</span>
+    </v-btn>
+    <v-btn v-if="user" @click="logout" class="blue" dark text>
+      <span>Logout</span>
     </v-btn>
   </v-app-bar>
 </template>
 
 <script>
+import firebase from "firebase";
+
 export default {
   name: "Navbar",
   data: () => ({
-    //user: null,
+    user: null,
   }),
   methods: {
     clickDrawer() {
       this.$emit("clickDrawer");
     },
+    logout() {
+      //redirect after logout
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          this.$router.push({ name: "Signin" });
+        });
+    },
+  },
+  created() {
+    // everytime user logs in or logs out or signs up
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.user = user;
+      } else {
+        this.user = null;
+      }
+    });
   },
 };
 </script>

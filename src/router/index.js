@@ -17,7 +17,7 @@ Vue.use(VueRouter);
 const routes = [
   { path: "/", name: "Home", component: Home },
   { path: "/perfil", name: "Perfil", component: Perfil },
-  { path: "/signin", name: "Signin", component: Signin },
+  { path: "/login", name: "Signin", component: Signin },
   {
     path: "/empresa/:empresa_id/ubicaciones",
     name: "UbicacionesIndex",
