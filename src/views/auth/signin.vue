@@ -163,6 +163,7 @@ export default {
               });
             })
             .then(() => {
+              this.dialog.false;
               this.$router.push({ name: "Home" });
             })
             .catch((err) => {

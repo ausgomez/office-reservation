@@ -551,6 +551,10 @@ export default {
         }
       }
     },
+
+    generarReserva() {
+      console.log();
+    },
   },
 };
 </script>
