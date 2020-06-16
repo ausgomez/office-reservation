@@ -1,7 +1,7 @@
 <template>
-  <v-navigation-drawer v-model="drawer" app>
+  <v-navigation-drawer v-if="user" v-model="drawer" app>
     <v-list dense>
-      <router-link v-if="user" :to="{ name: 'Perfil' }">
+      <router-link :to="{ name: 'Perfil' }">
         <v-list-item>
           <v-list-item-action>
             <v-icon>mdi-account</v-icon>
@@ -33,7 +33,7 @@
         v-if="user"
         :to="{
           name: 'UbicacionesIndex',
-          params: { empresa_id: user.empresa_id },
+          params: { empresa_id: 'patito' },
         }"
       >
         <v-list-item>

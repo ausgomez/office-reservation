@@ -96,7 +96,7 @@
                   @click:append="show1 = !show1"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12">
+              <!-- <v-col cols="12">
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <label class="input-group-text" for="inputGroupSelect01"
@@ -116,11 +116,8 @@
                     >
                   </select>
                 </div>
-              </v-col>
+              </v-col> -->
             </v-row>
-            <v-btn color="success" class="mx-auto " @click="check">
-              ss Cuenta
-            </v-btn>
             <v-btn color="success" class="mx-auto " @click="signup">
               Crear Cuenta
             </v-btn>
@@ -140,7 +137,7 @@ export default {
   data: () => ({
     /*tittle: "Iniciar sesion",*/
     email: null,
-    empModel: null,
+    empModel: 0,
     password: null,
     show1: false,
     empresas: [],
@@ -175,6 +172,7 @@ export default {
       }
     },
     async signup() {
+      let userObj;
       console.log("signup", this.email, this.password);
       if (this.email && this.password && this.empModel != null) {
         console.log("pass");
@@ -183,21 +181,37 @@ export default {
         await firebase
           .auth()
           .createUserWithEmailAndPassword(this.email, this.password)
-          .then((cred) => {
-            ref.add({
+          .then(async (cred) => {
+            userObj = {
               email: this.email,
               admin: false,
               user_id: cred.user.uid,
-              empresa_id: this.empresas[this.empModel].id,
-            });
-          })
-          .then(() => {
-            this.dialog.false;
-            this.$router.push({ name: "Home" });
+              empresa_id: "patito",
+              telefono: "555-5555555",
+              direccion: "Fondo de Bikini #405",
+              RFC: "8528528585852",
+              genero: "men",
+              nombre: "",
+            };
+
+            console.log("registrando", userObj);
           })
           .catch((err) => {
-            console.log(err);
+            console.log("error", err);
           });
+
+        let router = this.$router;
+        await ref
+          .add(userObj)
+          .then(function(docRef) {
+            console.log("Document written with ID: ", docRef.id);
+
+            router.push({ name: "Home" });
+          })
+          .catch(function(error) {
+            console.error("Error adding document: ", error);
+          });
+        console.log("done");
       } else {
         this.feedback = "You must all fields.";
       }

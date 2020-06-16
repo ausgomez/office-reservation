@@ -131,6 +131,7 @@ export default {
   components: {},
   data() {
     return {
+      valid: null,
       features: [
         ["Reserva espacios", "+631 disp"],
         ["Registra ubicaciones", "+143 disponibles"],
